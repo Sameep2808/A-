@@ -39,9 +39,9 @@ Start Point = (10,10)
 Goal = (389,239)
 
 ### Visualization
-![g1](https://github.com/Sameep2808/dijkstra/blob/main/Output.gif)
+![g1](https://github.com/Sameep2808/A-/blob/main/Videos/g1.gif)
 ### Path
-![p1](https://github.com/Sameep2808/dijkstra/blob/main/p1.png)
+![p1](https://github.com/Sameep2808/A-/blob/main/Videos/p1)
 
 ## Dependencies and Technologies used
 
