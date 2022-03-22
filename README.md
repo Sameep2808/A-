@@ -53,22 +53,32 @@ Goal = (389,239)
 
 1. Download the repository in src folder of catkin workspace
 ```
-git clone https://github.com/Sameep2808/dijkstra.git
+git clone https://github.com/Sameep2808/A-
 ```
 2. Run the python file
 ```
-python3 Dijkstra_pathplanning_Sameep_Pote.py 
+python3 A*.py 
 ```
 3. Enter the Initial And goal values
 ```
+Enter Clearence:
+5
+Enter Robot Radius:
+5
+Enter movement length:
+10
 Enter Initial X (Range: 0 - 399):
-0
+10
 Enter Initial Y (Range: 0 - 249):
+10
+Enter Start Angle:
 0
 Enter Goal X (Range: 0 - 399):
-399
+389
 Enter Goal Y (Range: 0 - 249):
-249
+239
+Enter Goal Angle:
+0
 ```
 4. Wait For the Output
 
