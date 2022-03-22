@@ -138,6 +138,7 @@ def DS(node, goal, L,ga):
 	OL.append(node.d)
 	OLc.append(node.d)
 	cOL.append(node.c)
+	P.append(node.pxy)
 	action_set = [1,2,3,4,5,6,7,8]
 	p=0
 	while Q:
@@ -163,6 +164,7 @@ def DS(node, goal, L,ga):
 						T = Q[OL.index(NewNode.d)]
 						if(T.g > NewNode.g):
 							T.p = NewNode.p
+							T.pxy = NewNode.pxy
 
 
 

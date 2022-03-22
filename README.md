@@ -57,7 +57,7 @@ git clone https://github.com/Sameep2808/A-
 ```
 2. Run the python file
 ```
-python3 A*.py 
+python3 Sameep_Pote.py 
 ```
 3. Enter the Initial And goal values
 ```
