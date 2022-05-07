@@ -35,8 +35,9 @@ SOFTWARE.
 ## Output
 
 ### Inputs
-Start Point = (10,10)
-Goal = (389,239)
+
+Clearance, goal position, starting position 
+agent_input.yaml
 
 ### Visualization
 ![g1](https://github.com/Sameep2808/A-/blob/main/Videos/g1.gif)
@@ -47,7 +48,7 @@ Goal = (389,239)
 
 - Programming language : Python
 - Operating System : Ubuntu 20.04
-- Packages : OpenCV, numpy
+- Packages : OpenCV, numpy, matplotlib, yaml
 
 ## Run
 
@@ -55,30 +56,29 @@ Goal = (389,239)
 ```
 git clone https://github.com/Sameep2808/A-
 ```
-2. Run the python file
+
+2. Enter robot clearance and radius information and **_ALL_** agent(s) starting and goal positions into agent_input.yaml:
+
+**Robot information:**
 ```
-python3 Sameep_Pote.py 
+robot:
+  clearance: 5
+  radius: 2
+  movement_length: 2
 ```
-3. Enter the Initial And goal values
+
+**Example of agent information formatting:**
 ```
-Enter Clearence:
-5
-Enter Robot Radius:
-5
-Enter movement length:
-10
-Enter Initial X (Range: 0 - 399):
-10
-Enter Initial Y (Range: 0 - 249):
-10
-Enter Start Angle:
-0
-Enter Goal X (Range: 0 - 399):
-389
-Enter Goal Y (Range: 0 - 249):
-239
-Enter Goal Angle:
-0
+- agent_name: agent1
+  start: [0,0]
+  goal: [240,240]
+  start_angle: 30
+  goal_angle: 30
+```
+
+3. Run the python file calling agent_input.yaml file
+```
+python3 Sameep_Pote.py agent_input.yaml
 ```
 4. Wait For the Output
 
