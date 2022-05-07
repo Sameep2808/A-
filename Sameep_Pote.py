@@ -1,11 +1,16 @@
 import os
+import sys
+sys.path.insert(0, '../')
 import math
 import numpy as np
 from numpy import array
+import argparse
 import cv2
 import time
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation 
+import yaml
+from yaml.loader import FullLoader
 
 
 def eq(x1,y1,x2,y2,x,y,f):
@@ -213,53 +218,57 @@ def gcost(x,y):
 def get_input():
 	global cll
 	global rr
-	print('Enter Clearence:')
-	cll = int(input())
-	print('Enter Robot Radius:')
-	rr = int(input())
+	global L
+	yaml_parse = argparse.ArgumentParser()
+	yaml_parse.add_argument("input", help="input file containing clearances, agent start and goal locations, and obstacles")
+	#yaml_parse.add_argument("output", help="output file with agent schedule and cost")
+	args = yaml_parse.parse_args()
+ 	
+	with open(args.input, 'r') as input_file:
+		try:
+			param = yaml.load(input_file, Loader=yaml.FullLoader)
+		except yaml.YAMLError as exc:
+			print(exc)
+	cll = int(param["robot"]["clearance"])
+	rr = int(param["robot"]["radius"])
 	cll = cll + rr  
-	print('Enter movement length:')
-	L = int(input())
+	L = int(param["robot"]["movement_length"])
 	
-	print('Enter Initial X (Range: 0 - 399):')
-	x = int(input())
-	if (x - rr <0) or (x + rr >399):
-		print('INVALID X SETTING INITIAL X AS LEAST RADIUS')
-		x=rr
+	agents_dict = param['agents']
+
+	# Verifies all agents fall within the map, and not on an obstacle
+	for i in range(len(agents_dict)):
+		x = int(agents_dict[i]['start'][0])
+		if (x - rr <0) or (x + rr >399):
+			print('INVALID X SETTING INITIAL X AS LEAST RADIUS')
+			agents_dict[i]['start'][0]=rr
+			
+		y = int(agents_dict[i]['start'][1])
+		if (y - rr <0) or (y +rr >249):
+			print('INVALID Y SETTING INITIAL Y AS LEAST RADIUS')
+			agents_dict[i]['start'][1]=rr
 		
-	print('Enter Initial Y (Range: 0 - 249):')
-	y = int(input())
-	if (y - rr <0) or (y +rr >249):
-		print('INVALID Y SETTING INITIAL Y AS LEAST RADIUS')
-		y=rr
-	print('Enter Start Angle:')
-	sa = int(input())
-	
-	if detect(x,y):
-		print('INVALID POINTS SETTING INITIAL POINT AS [Robot Radius,Robot Radius]')
-		x=rr
-		y=rr
+		if detect(x,y):
+			print('INVALID POINTS SETTING INITIAL POINT AS [Robot Radius,Robot Radius]')
+			agents_dict[i]['start'][0]=rr
+			agents_dict[i]['start'][1]=rr
+			
+		xg = int(agents_dict[i]['goal'][0])
+		if (xg - rr <0) or (xg + rr >399):
+			print('INVALID X SETTING GOAL X AS 399')
+			agents_dict[i]['goal'][0]=399 - rr
+			
+		yg = int(agents_dict[i]['goal'][1])
+		if (yg - rr <0) or (yg + rr>249):
+			print('INVALID Y SETTING GOAL Y AS 249')
+			agents_dict[i]['goal'][1]=249 - rr 
 		
-	print('Enter Goal X (Range: 0 - 399):')
-	xg = int(input())
-	if (xg - rr <0) or (xg + rr >399):
-		print('INVALID X SETTING GOAL X AS 399')
-		xg=399 - rr
+		if detect(xg,yg):
+			print('INVALID POINTS SETTING INITIAL POINT AS [399,249]')
+			agents_dict[i]['goal'][0]=399 - rr
+			agents_dict[i]['goal'][1]=249 - rr
 		
-	print('Enter Goal Y (Range: 0 - 249):')
-	yg = int(input())
-	if (yg - rr <0) or (yg + rr>249):
-		print('INVALID Y SETTING GOAL Y AS 249')
-		yg=249 - rr 
-	
-	if detect(xg,yg):
-		print('INVALID POINTS SETTING INITIAL POINT AS [399,249]')
-		xg=399 - rr
-		yg=249 - rr
-	print('Enter Goal Angle:')
-	ga = int(input())
-		
-	return [x,y],[xg,yg],L,sa,ga
+	return agents_dict
 
 
 def graph(O,OP,P):
@@ -310,7 +319,21 @@ if __name__ == '__main__':
 	global rr
 	start = []
 	global goal
-	start,goal,L,sa,ga=get_input()
+	all_inputs = get_input()
+	for i in range(len(all_inputs)):
+		name =  all_inputs[i].pop('agent_name')
+		start =  all_inputs[i].pop('start')
+		goal =  all_inputs[i].pop('goal')
+		sa =  all_inputs[i].pop('start_angle')
+		ga =  all_inputs[i].pop('goal_angle')
+		print("name:", name)
+		print("start:", start)
+		print("goal:", goal)
+		print("L:", L)
+		print("sa:", sa)
+		print("ga:", ga)
+		input("press enter to continue")
+	
 	root = Node(start, sa, 0 , None, 0, start)
 	F,C,O,Pxy = DS(root,goal,L,ga)
 	p=reverse_path(F)

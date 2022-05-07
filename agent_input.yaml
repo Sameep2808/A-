@@ -1,0 +1,22 @@
+# Document for adjusting input into the CBS algorithm
+# Authors: Sameep Pote and Jon Kreinbrink
+---
+# Stores information about the robots desired clearance, physical radius, and movement length, assumes all robots
+# have the same requirements
+robot:
+  clearance: 5
+  radius: 2
+  movement_length: 2
+
+# Each agent must have a name, start postion, goal position, start angle, and goal angle
+agents:
+- agent_name: agent1
+  start: [0,0]
+  goal: [240,240]
+  start_angle: 30
+  goal_angle: 30
+- agent_name: agent2
+  start: [50,50]
+  goal: [150,150]
+  start_angle: 30
+  goal_angle: 30
